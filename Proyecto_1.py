@@ -2,8 +2,8 @@
 #Facultad de Ingeniería
 #Programación (0790)
 #Profesor: Carlos E. González C. github: c27gc
-
 #Estudiante: Gabriela Saules CI:26470714 github: gabrielasaules98
+
 #Descripción: En este código se implementará una agenda telefónica básica, y
 #tiene como fin único la enseñanza de Python, en particular la manipulación de
 #archivos de texto.
@@ -29,22 +29,36 @@ def crear_contacto(agenda_path):
         id_contact = '0-0001'
     else:
         last_contact = int(list(agenda.keys())[-1].split('-')[-1])+1
-        
+        """se obtiene la última llave y id de la agenda descargada
+          se procede a usar la función split con el separador - y se accede al último índice de la lista resultante
+          obteniendo el número de contacto, ejemplo de '0-0001' se obtiene el '0001', ese string se pasa a su representación entera
+          y luego se aumenta en uno, en el ejemplo anterior last_contact quedaría en el entero 2"""
         last_contact = (4-len(str(last_contact)))*'0'+str(last_contact)
+        """ se formatea el entero del último contacto a
+        su representación string correspondiente
+        esto se hace primero obteniendo la diferencia de 4 con la cantidad de digitos que tenga el número del id más reciente
+        esa será la cantidad de de ceros que irán antes de la representación entera del id,  ejemplo:
+        representación enterada último id : 2, dígitos de ese número: 1, 0 a agregar antes de el: 4-1 = 3
+        finalmente se concatenan los dos strings para obtener '0002'"""
         id_contact = '0-{}'.format(last_contact)
+         # se finaliza el formato concatenando un prefijo 0-ejemplo: de last_contact = '0002' se obtiene un id_contact = '0-0002'
 
     agenda.update( {id_contact:contacto} )
+     """se llama a actualización de la agenda con un diccionario como parametro
+    este dicionario tiene como unica llave el id_contact antes generado y como valor el diccionario contact con los valores 
+    introducidos por consola, si un contacto con mismo id existe en dicha agenda actualiza la llave-valor de ese contacto,
+    si no existe dicho contacto lo crea y añade al diccionario agenda como es nuestro caso"""
 
-    cargar_agenda(agenda_path,agenda)
+    cargar_agenda(agenda_path,agenda) #se llama al guardado del diccionario agenda actualizado en su respectiva dirección de archivo
 
 def eliminar_contacto(agenda_path):
     """Esta función elimina un contacto de una agenda"""
     # Asinación : Hacer que los identificadores id se reacomoden cuando se elimine un contacto.
-    Flag = True
-    while Flag:
-        nombre = input("Indique nombre (o parte del nombre) del contacto que desea eliminar de la agenda: ")
-        agenda = descargar_agenda(agenda_path)
-        print("Identifique el id del usuario que desea eliminar.")
+    Flag = True #se asigna un flag para eliminar contactos mientras el usuario lo desee
+    while Flag: #inicia el ciclo de eliminación iterando
+        nombre = input("Indique nombre (o parte del nombre) del contacto que desea eliminar de la agenda: ") #se obtiene el nombre parcial o total del usuario a eliminar
+        agenda = descargar_agenda(agenda_path) #hace un llamado a función que retorna la agenda en la dirección pasada por parametro
+        print("Identifique el id del usuario que desea eliminar.") #imprime mensaje para solicitar la identificación del usuario a eliminar
         for element_key,element in buscar(agenda, nombre.lower()):
             print('id: {}\t nombre: {}'.format(element_key, element))
 
